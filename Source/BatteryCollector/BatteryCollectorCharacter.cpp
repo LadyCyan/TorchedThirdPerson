@@ -46,20 +46,20 @@ ABatteryCollectorCharacter::ABatteryCollectorCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-	//Create CollectionSphere
-	CollectionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CollectionSphere"));
-	CollectionSphere -> SetupAttachment(RootComponent);
-	CollectionSphere->SetSphereRadius(200.f);
+	//Create LightSphere
+	LightSphere = CreateDefaultSubobject<USphereComponent>(TEXT("LightSphere"));
+	LightSphere -> SetupAttachment(RootComponent);
+	LightSphere->SetSphereRadius(200.f);
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 	
 	//Set a base power level for the character
-	InitialPower = 2000.f;
+	InitialPower = 400.f;
 	CharacterPower = InitialPower;
 
-	//set the depenmdence of the speed on the power level
-	SpeedFactor = 0.75f;
-	BaseSpeed = 10.0f;
+	//set the dependence of the speed on the power level
+	//SpeedFactor = 0.75f;
+	//BaseSpeed = 10.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -153,12 +153,12 @@ void ABatteryCollectorCharacter::MoveRight(float Value)
 void ABatteryCollectorCharacter::CollectPickups() {
 	//Get all overlapping actors and store them in an array
 	TArray<AActor*> CollectedActors;
-	CollectionSphere -> GetOverlappingActors(CollectedActors);
+	LightSphere -> GetOverlappingActors(CollectedActors);
 
 	//keep track of the collected power
 	float CollectedPower = 0;
 
-	//For eacha ctor we collected
+	//For each actor we collected
 	for (int32 iCollected = 0; iCollected < CollectedActors.Num(); ++iCollected)
 	{
 		//Cast the actor to APickup

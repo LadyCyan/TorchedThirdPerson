@@ -21,7 +21,7 @@ class ABatteryCollectorCharacter : public ACharacter
 
 	/** Collection Sphere */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class USphereComponent* CollectionSphere;
+		class USphereComponent* LightSphere;
 public:
 	ABatteryCollectorCharacter();
 
@@ -111,7 +111,7 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-	/** Returns CollectionSphere subobject **/
-	FORCEINLINE class USphereComponent* GetCollectionSphere() const { return CollectionSphere; }
+	/** Returns LightSphere subobject **/
+	FORCEINLINE class USphereComponent* GetLightSphere() const { return LightSphere; }
 };
 
