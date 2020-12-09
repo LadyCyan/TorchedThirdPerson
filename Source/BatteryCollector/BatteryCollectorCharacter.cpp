@@ -178,13 +178,25 @@ void ABatteryCollectorCharacter::CollectPickups() {
 			//check to see if pickup is also a battery
 			ABrazier* const TestBrazier = Cast<ABrazier>(TestPickup);
 
+			//AGameModeBase* GameMode = (AGameModeBase*)GetWorld()->GetAuthGameMode();
+			//AGameModeBase* GameMode = Cast<AGameModeBase>(GetWorld()->GetAuthGameMode<AGameModeBase>());
+
+
+			//CharacterPower = GameMode->GetMaxPower();
+
+			CharacterPower = GetInitialPower() * 1.25f;
+
 			if (TestBrazier) {
 				//increase the collected power
 				//CollectedPower += TestBrazier->GetPower();
 				//I THINK THIS IS WHERE YOU WOULD PUT AURA EFFECTS, SINCE THIS IS WHERE THE TIMER AND SUCH ARE FOUND
 			}
 			//Deactivate the pickup
-			//TestPickup->SetActive(true);
+			TestPickup->SetActive(true);
+		}
+		else if (TestPickup)
+		{
+			CharacterPower = GetInitialPower() * 1.25f;
 		}
 	}
 
@@ -206,7 +218,7 @@ void ABatteryCollectorCharacter::UpdatePower(float PowerChange) {
 	//change power
 	CharacterPower = CharacterPower + PowerChange;
 	//change speed based on power
-	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed + SpeedFactor * CharacterPower;
+	//GetCharacterMovement()->MaxWalkSpeed = BaseSpeed + SpeedFactor * CharacterPower;
 
 //call visual effect
 	PowerChangeEffect();

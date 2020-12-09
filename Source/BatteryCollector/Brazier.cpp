@@ -18,8 +18,6 @@ ABrazier::ABrazier()
 	{
 		BrazierSphere->SetSphereRadius(100.0f);
 	}
-
-
 }
 
 void ABrazier::WasTriggered_Implementation() {
