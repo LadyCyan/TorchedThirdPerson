@@ -174,6 +174,7 @@ void ABatteryCollectorCharacter::CollectPickups() {
 
 			//call the pickups WasTriggered function
 			TestPickup->WasTriggered();
+
 			//check to see if pickup is also a battery
 			ABrazier* const TestBrazier = Cast<ABrazier>(TestPickup);
 
@@ -183,7 +184,7 @@ void ABatteryCollectorCharacter::CollectPickups() {
 				//I THINK THIS IS WHERE YOU WOULD PUT AURA EFFECTS, SINCE THIS IS WHERE THE TIMER AND SUCH ARE FOUND
 			}
 			//Deactivate the pickup
-			TestPickup->SetActive(true);
+			//TestPickup->SetActive(true);
 		}
 	}
 
