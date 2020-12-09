@@ -2,45 +2,43 @@
 
 
 #include "Brazier.h"
+#include "BatteryCollector.h"
 #include "Components/SphereComponent.h"
 
 // Sets default values
 ABrazier::ABrazier()
 {
+	GetMesh()->SetSimulatePhysics(true);
 
 	//Create LightSphere
 	BrazierSphere = CreateDefaultSubobject<USphereComponent>(TEXT("BrazierSphere"));
-	
 	BrazierSphere->SetupAttachment(RootComponent);
 
-	Light = false;
-
-	/*if (ABrazier::Light == false)
+	if (IsActive() == false)
 	{
-		BrazierSphere->SetSphereRadius(200.f);
+		BrazierSphere->SetSphereRadius(100.0f);
 	}
-	else if (ABrazier::Light == true) 
+
+
+}
+
+void ABrazier::WasTriggered_Implementation() {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("We got here!"));
+	//Use the base pickup behavior
+	Super::WasTriggered_Implementation();
+
+	bIsActive = true;
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, IsActive() ? "True" : "False");
+
+	if (IsActive() == false) 
 	{
-		BrazierSphere->SetSphereRadius(600.f);
-	}*/
-}
-
-
-// Called when the game starts or when spawned
-void ABrazier::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-// Called every frame
-void ABrazier::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-void ABrazier::LightBrazier() 
-{
+		BrazierSphere->SetSphereRadius(100.0f);
+	}
+	else
+	{
+		BrazierSphere->SetSphereRadius(1000.0f);
+	}
 
 }
 

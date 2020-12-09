@@ -13,11 +13,12 @@ UCLASS()
 class BATTERYCOLLECTOR_API ABatteryPickup : public APickup
 {
 	GENERATED_BODY()
+
 public:
 	ABatteryPickup();
 
-	/*Override the WasCollected function-use Implkementation because it's a blueprint native event*/
-	void WasCollected_Implementation() override;
+	/*Override the WasTriggered function-use Implementation because it's a blueprint native event*/
+	void WasTriggered_Implementation() override;
 
 	//Public way to access the battery's power level
 	float GetPower();

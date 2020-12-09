@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "BatteryCollector.h"
 #include "BatteryPickup.h"
+#include "BatteryCollector.h"
+
 
 //Set default values
 ABatteryPickup::ABatteryPickup() 
@@ -12,11 +13,11 @@ ABatteryPickup::ABatteryPickup()
 	BatteryPower = 150.f;
 }
 
-void ABatteryPickup::WasCollected_Implementation() {
+void ABatteryPickup::WasTriggered_Implementation() {
 	//Use the base pickup behavior
-	Super::WasCollected_Implementation();
+	Super::WasTriggered_Implementation();
 	//Destroy the battery
-	Destroy();
+	//Destroy();
 }
 
 //report the power level of the battery

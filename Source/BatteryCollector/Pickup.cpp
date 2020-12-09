@@ -12,7 +12,7 @@ APickup::APickup()
 	PrimaryActorTick.bCanEverTick = false;
 
 	//All pickups start active
-	bIsActive = true;
+	bIsActive = false;
 
 	//Create static mesh component
 	PickupMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PickupMesh"));
@@ -42,9 +42,10 @@ bool APickup::IsActive()
 void APickup::SetActive(bool NewPickupState) 
 {
 	bIsActive = NewPickupState;
+
 }
 
-void APickup::WasCollected_Implementation() {
+void APickup::WasTriggered_Implementation() {
 	FString PickupDebugString = GetName();
 	UE_LOG(LogClass, Log, TEXT("You have collected %s"), *PickupDebugString);
 }

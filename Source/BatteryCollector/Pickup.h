@@ -33,10 +33,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Pickup")
 		void SetActive(bool NewPickupState);
 
-	/*Function to call when the pickup is collected*/
+	/*Function to call when the pickup is triggered*/
 	UFUNCTION(BlueprintNativeEvent)
-	void WasCollected();
-	virtual void WasCollected_Implementation();
+	void WasTriggered();
+	virtual void WasTriggered_Implementation();
 
 
 protected:

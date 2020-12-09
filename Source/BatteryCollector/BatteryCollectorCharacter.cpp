@@ -11,6 +11,7 @@
 #include "Pickup.h"
 #include "Components/SphereComponent.h"
 #include "BatteryPickup.h"
+#include "Brazier.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ABatteryCollectorCharacter
@@ -58,8 +59,8 @@ ABatteryCollectorCharacter::ABatteryCollectorCharacter()
 	CharacterPower = InitialPower;
 
 	//set the dependence of the speed on the power level
-	//SpeedFactor = 0.75f;
-	//BaseSpeed = 10.0f;
+	SpeedFactor = 0.75f;
+	BaseSpeed = 10.0f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -72,7 +73,7 @@ void ABatteryCollectorCharacter::SetupPlayerInputComponent(class UInputComponent
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
-	InputComponent->BindAction("Collect", IE_Pressed, this, &ABatteryCollectorCharacter::CollectPickups);
+	InputComponent->BindAction("Trigger", IE_Pressed, this, &ABatteryCollectorCharacter::CollectPickups);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ABatteryCollectorCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ABatteryCollectorCharacter::MoveRight);
@@ -155,6 +156,10 @@ void ABatteryCollectorCharacter::CollectPickups() {
 	TArray<AActor*> CollectedActors;
 	LightSphere -> GetOverlappingActors(CollectedActors);
 
+	FString IntAsString = FString::FromInt(CollectedActors.Num());
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, IntAsString);
+
 	//keep track of the collected power
 	float CollectedPower = 0;
 
@@ -162,20 +167,23 @@ void ABatteryCollectorCharacter::CollectPickups() {
 	for (int32 iCollected = 0; iCollected < CollectedActors.Num(); ++iCollected)
 	{
 		//Cast the actor to APickup
-		APickup* const TestPickup = Cast<APickup>(CollectedActors[iCollected]);
-		//If the cast is successful and the pickup is valid and active
-		if (TestPickup && !TestPickup->IsPendingKill() && TestPickup->IsActive()) {
+		APickup* const TestPickup = Cast<APickup>(CollectedActors[iCollected]);\
 
-			//call the pickups WasCollected function
-			TestPickup->WasCollected();
+		//If the cast is successful and the pickup is valid and active
+		if (TestPickup && TestPickup -> IsActive() == false) {
+
+			//call the pickups WasTriggered function
+			TestPickup->WasTriggered();
 			//check to see if pickup is also a battery
-			ABatteryPickup* const TestBattery = Cast<ABatteryPickup>(TestPickup);
-			if (TestBattery) {
+			ABrazier* const TestBrazier = Cast<ABrazier>(TestPickup);
+
+			if (TestBrazier) {
 				//increase the collected power
-				CollectedPower += TestBattery->GetPower();
+				//CollectedPower += TestBrazier->GetPower();
+				//I THINK THIS IS WHERE YOU WOULD PUT AURA EFFECTS, SINCE THIS IS WHERE THE TIMER AND SUCH ARE FOUND
 			}
 			//Deactivate the pickup
-			TestPickup->SetActive(false);
+			TestPickup->SetActive(true);
 		}
 	}
 

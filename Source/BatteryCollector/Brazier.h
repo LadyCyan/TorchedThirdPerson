@@ -3,11 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Pickup.h"
 #include "GameFramework/Actor.h"
 #include "Brazier.generated.h"
 
 UCLASS()
-class BATTERYCOLLECTOR_API ABrazier : public AActor
+class BATTERYCOLLECTOR_API ABrazier : public APickup
 {
 	GENERATED_BODY()
 	
@@ -18,19 +19,10 @@ public:
 	// Sets default values for this actor's properties
 	ABrazier();
 
-	//bool for off and on
-	bool Light;
+	/*Override the WasTriggered function-use Implementation because it's a blueprint native event*/
+	void WasTriggered_Implementation() override;
 
-	UFUNCTION(VisibleAnywhere, BlueprintPure, Category = "Brazier")
-		bool LightBrazier();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	FORCEINLINE class USphereComponent* GetBrazierSphere() const { return BrazierSphere; }
 };
