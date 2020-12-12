@@ -51,6 +51,11 @@ ABatteryCollectorCharacter::ABatteryCollectorCharacter()
 	LightSphere = CreateDefaultSubobject<USphereComponent>(TEXT("LightSphere"));
 	LightSphere -> SetupAttachment(RootComponent);
 	LightSphere->SetSphereRadius(200.f);
+	LightSphere->SetCollisionProfileName(TEXT("Trigger"));
+
+	LightSphere->OnComponentBeginOverlap.AddDynamic(this, &ABatteryCollectorCharacter::OnOverlapBegin);
+	LightSphere->OnComponentEndOverlap.AddDynamic(this, &ABatteryCollectorCharacter::OnOverlapEnd);
+
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 	
@@ -61,6 +66,9 @@ ABatteryCollectorCharacter::ABatteryCollectorCharacter()
 	//set the dependence of the speed on the power level
 	SpeedFactor = 0.75f;
 	BaseSpeed = 10.0f;
+
+	//Decaying trigger
+	bIsDecaying = 0;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -151,6 +159,11 @@ void ABatteryCollectorCharacter::MoveRight(float Value)
 	}
 }
 
+bool ABatteryCollectorCharacter::IsDecaying()
+{
+	return bIsDecaying == 0;
+}
+
 void ABatteryCollectorCharacter::CollectPickups() {
 	//Get all overlapping actors and store them in an array
 	TArray<AActor*> CollectedActors;
@@ -167,7 +180,7 @@ void ABatteryCollectorCharacter::CollectPickups() {
 	for (int32 iCollected = 0; iCollected < CollectedActors.Num(); ++iCollected)
 	{
 		//Cast the actor to APickup
-		APickup* const TestPickup = Cast<APickup>(CollectedActors[iCollected]);\
+		APickup* const TestPickup = Cast<APickup>(CollectedActors[iCollected]);
 
 		//If the cast is successful and the pickup is valid and active
 		if (TestPickup && TestPickup -> IsActive() == false) {
@@ -175,14 +188,8 @@ void ABatteryCollectorCharacter::CollectPickups() {
 			//call the pickups WasTriggered function
 			TestPickup->WasTriggered();
 
-			//check to see if pickup is also a battery
+			//check to see if a brazier
 			ABrazier* const TestBrazier = Cast<ABrazier>(TestPickup);
-
-			//AGameModeBase* GameMode = (AGameModeBase*)GetWorld()->GetAuthGameMode();
-			//AGameModeBase* GameMode = Cast<AGameModeBase>(GetWorld()->GetAuthGameMode<AGameModeBase>());
-
-
-			//CharacterPower = GameMode->GetMaxPower();
 
 			CharacterPower = GetInitialPower() * 1.25f;
 
@@ -204,10 +211,12 @@ void ABatteryCollectorCharacter::CollectPickups() {
 		UpdatePower(CollectedPower);
 	}
 }
+
 //reports starting power
 float ABatteryCollectorCharacter::GetInitialPower() {
 	return InitialPower;
 }
+
 //reports current power
 float ABatteryCollectorCharacter::GetCurrentPower() {
 	return CharacterPower;
@@ -222,4 +231,47 @@ void ABatteryCollectorCharacter::UpdatePower(float PowerChange) {
 
 //call visual effect
 	PowerChangeEffect();
+}
+
+void ABatteryCollectorCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32
+	OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Overlap Begin Method Called"));
+
+	ABrazier* const TestBrazier = Cast<ABrazier>(OtherActor);
+
+	USphereComponent* const TestComponent = Cast<USphereComponent>(OtherComp);
+
+	if (TestBrazier && TestComponent) 
+	{
+		if (GEngine) {
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Overlap Begin"));
+		}
+		CharacterPower = InitialPower * 1.25f;
+		bIsDecaying++;
+
+		FString IntAsString = FString::FromInt(bIsDecaying);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("bIsDecaying = ") + IntAsString);
+	}
+}
+
+
+void ABatteryCollectorCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32
+	OtherBodyIndex) 
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Overlap End Method Called"));
+	ABrazier* const TestBrazier = Cast<ABrazier>(OtherActor);
+	USphereComponent* const TestComponent = Cast<USphereComponent>(OtherComp);
+
+	if (TestBrazier && TestComponent)
+	{
+		if (GEngine) {
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Overlap End"));
+		}
+
+		bIsDecaying--;
+
+		FString IntAsString = FString::FromInt(bIsDecaying);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red,TEXT("bIsDecaying = ") + IntAsString);
+	}
 }

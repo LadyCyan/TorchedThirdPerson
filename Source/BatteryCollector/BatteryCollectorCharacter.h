@@ -19,8 +19,8 @@ class ABatteryCollectorCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
 
-	/** Collection Sphere */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	/** Collection Sphere same as above component*/
+	UPROPERTY(VisibleAnywhere) 
 		class USphereComponent* LightSphere;
 public:
 	ABatteryCollectorCharacter();
@@ -45,6 +45,17 @@ public:
 	//@param PowerChange this is the amount to change the power by, and it can be positive or negative.
 	UFUNCTION(BlueprintCallable, Category="Power")
 	void UpdatePower(float PowerChange);
+
+	UFUNCTION()
+		void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32
+			OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+		void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32
+			OtherBodyIndex);
+
+	UFUNCTION(BlueprintPure)
+		bool IsDecaying();
 
 protected:
 
@@ -96,9 +107,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Power", Meta = (BlueprintProtected = "true"))
 	float BaseSpeed;
 
-
 	UFUNCTION(BlueprintImplementableEvent, Category="Power")
 	void PowerChangeEffect();
+
+	int bIsDecaying; 
 
 
 private:
