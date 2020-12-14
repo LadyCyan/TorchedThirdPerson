@@ -32,7 +32,7 @@ void ABrazier::WasTriggered_Implementation() {
 
 	if (IsActive() == false) 
 	{
-		BrazierSphere->SetSphereRadius(100.0f);
+		BrazierSphere->SetSphereRadius(0.0f);
 	}
 	else
 	{
