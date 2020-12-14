@@ -48,7 +48,7 @@ void ABatteryCollectorGameMode::Tick(float DeltaTime) {
 
 	//check that we are using the battery collector character
 	ABatteryCollectorCharacter* MyCharacter = Cast<ABatteryCollectorCharacter>(UGameplayStatics::GetPlayerPawn(this, 0));
-	if (MyCharacter && MyCharacter->IsDecaying()==true)
+	if (MyCharacter && MyCharacter->IsDecaying()==true && !MyCharacter->TorchLitCount() == true)
 	{
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Decaying True"));
 		//if the character's power is positive
@@ -58,11 +58,12 @@ void ABatteryCollectorGameMode::Tick(float DeltaTime) {
 			//decrease the character's power using the decay rate
 			MyCharacter->UpdatePower(-DeltaTime * DecayRate * (MyCharacter->GetInitialPower()));
 		}		
-	}else
-		{
-			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Decaying false"));
-		}
+	} if (MyCharacter->TorchLitCount() == true) {
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Game Should end here"));
+	}
 }
+
 
 float ABatteryCollectorGameMode::GetMaxPower() const
 {

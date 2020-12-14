@@ -57,6 +57,8 @@ public:
 	UFUNCTION(BlueprintPure)
 		bool IsDecaying();
 
+	UFUNCTION(BlueprintPure)
+		bool TorchLitCount();
 protected:
 
 	/** Resets HMD orientation in VR. */
@@ -112,6 +114,7 @@ protected:
 
 	int bIsDecaying; 
 
+	int bTorchLitCount;
 
 private:
 	//current power level of our character

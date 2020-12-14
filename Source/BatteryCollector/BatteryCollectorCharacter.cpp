@@ -164,6 +164,10 @@ bool ABatteryCollectorCharacter::IsDecaying()
 	return bIsDecaying == 0;
 }
 
+bool ABatteryCollectorCharacter::TorchLitCount() {
+	return bTorchLitCount == 4;
+}
+
 void ABatteryCollectorCharacter::CollectPickups() {
 	//Get all overlapping actors and store them in an array
 	TArray<AActor*> CollectedActors;
@@ -195,8 +199,9 @@ void ABatteryCollectorCharacter::CollectPickups() {
 
 			if (TestBrazier) {
 				//increase the collected power
-				//CollectedPower += TestBrazier->GetPower();
-				//I THINK THIS IS WHERE YOU WOULD PUT AURA EFFECTS, SINCE THIS IS WHERE THE TIMER AND SUCH ARE FOUND
+				bTorchLitCount++;
+				FString TorchAsString = FString::FromInt(bTorchLitCount);
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("bTorchLitCount = ") + TorchAsString);
 			}
 			//Deactivate the pickup
 			TestPickup->SetActive(true);
