@@ -54,14 +54,19 @@ void ABatteryCollectorGameMode::Tick(float DeltaTime) {
 		//if the character's power is positive
 		if (MyCharacter->GetCurrentPower() > 0) 
 		{
-
 			//decrease the character's power using the decay rate
 			MyCharacter->UpdatePower(-DeltaTime * DecayRate * (MyCharacter->GetInitialPower()));
-		}		
-	}else
-		{
-			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Decaying false"));
 		}
+		else 
+		{
+			UGameplayStatics::OpenLevel(this, "MainMenu");
+		}
+	}
+	else
+	{
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Decaying false"));
+		
+	}
 }
 
 float ABatteryCollectorGameMode::GetMaxPower() const

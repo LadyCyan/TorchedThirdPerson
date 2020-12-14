@@ -12,6 +12,7 @@
 #include "Components/SphereComponent.h"
 #include "BatteryPickup.h"
 #include "Brazier.h"
+#include "Kismet/GameplayStatics.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ABatteryCollectorCharacter
@@ -247,7 +248,7 @@ void ABatteryCollectorCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedC
 		if (GEngine) {
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Overlap Begin"));
 		}
-		CharacterPower = InitialPower * 1.25f;
+		//CharacterPower = InitialPower * 1.25f;
 		PowerChangeEffect();
 		bIsDecaying++;
 
