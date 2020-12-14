@@ -201,6 +201,7 @@ void ABatteryCollectorCharacter::CollectPickups() {
 			if (TestBrazier) {
 				//increase the collected power
 				bTorchLitCount++;
+				PowerChangeEffect();
 				FString TorchAsString = FString::FromInt(bTorchLitCount);
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("bTorchLitCount = ") + TorchAsString);
 			}
@@ -210,6 +211,7 @@ void ABatteryCollectorCharacter::CollectPickups() {
 		else if (TestPickup)
 		{
 			CharacterPower = GetInitialPower() * 1.25f;
+			PowerChangeEffect();
 		}
 	}
 
@@ -232,8 +234,6 @@ float ABatteryCollectorCharacter::GetCurrentPower() {
 void ABatteryCollectorCharacter::UpdatePower(float PowerChange) {
 	//change power
 	CharacterPower = CharacterPower + PowerChange;
-	//change speed based on power
-	//GetCharacterMovement()->MaxWalkSpeed = BaseSpeed + SpeedFactor * CharacterPower;
 
 //call visual effect
 	PowerChangeEffect();
@@ -254,9 +254,9 @@ void ABatteryCollectorCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedC
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Overlap Begin"));
 		}
 		//CharacterPower = InitialPower * 1.25f;
-		PowerChangeEffect();
-		bIsDecaying++;
 
+		bIsDecaying++;
+		PowerChangeEffect();
 		FString IntAsString = FString::FromInt(bIsDecaying);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("bIsDecaying = ") + IntAsString);
 	}
