@@ -57,9 +57,13 @@ void ABatteryCollectorGameMode::Tick(float DeltaTime) {
 
 			//decrease the character's power using the decay rate
 			MyCharacter->UpdatePower(-DeltaTime * DecayRate * (MyCharacter->GetInitialPower()));
-		}		
+		}
+		else {
+			UGameplayStatics::OpenLevel(this, "MainMenu");
+		}
 	} if (MyCharacter->TorchLitCount() == true) {
 
+		UGameplayStatics::OpenLevel(this, "WinScreen");
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Game Should end here"));
 	}
 }
