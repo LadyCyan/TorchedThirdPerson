@@ -4,16 +4,13 @@
 #include "Brazier.h"
 #include "BatteryCollector.h"
 #include "Components/SphereComponent.h"
-#include "Particles/ParticleSystemComponent.h"
-#include "particles/ParticleEmitter.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ABrazier::ABrazier()
 {
 	GetMesh()->SetSimulatePhysics(true);
 
-	Fire = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Fire_Partilce_Brazer"));
-	Fire->SetupAttachment(RootComponent);
 	//Create LightSphere
 	BrazierSphere = CreateDefaultSubobject<USphereComponent>(TEXT("BrazierSphere"));
 	BrazierSphere->SetupAttachment(RootComponent);

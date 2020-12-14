@@ -19,7 +19,7 @@ ABatteryCollectorGameMode::ABatteryCollectorGameMode()
 	PrimaryActorTick.bStartWithTickEnabled = true;
 	PrimaryActorTick.bCanEverTick = true;
 	//base decay rate
-	DecayRate = 0.01f;
+	DecayRate = 0.05f;
 }
 
 void ABatteryCollectorGameMode::BeginPlay() 

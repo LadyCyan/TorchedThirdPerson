@@ -60,7 +60,7 @@ ABatteryCollectorCharacter::ABatteryCollectorCharacter()
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 	
 	//Set a base power level for the character
-	InitialPower = 400.f;
+	InitialPower = 200.f;
 	CharacterPower = InitialPower;
 
 	//set the dependence of the speed on the power level
@@ -248,6 +248,7 @@ void ABatteryCollectorCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedC
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Overlap Begin"));
 		}
 		CharacterPower = InitialPower * 1.25f;
+		PowerChangeEffect();
 		bIsDecaying++;
 
 		FString IntAsString = FString::FromInt(bIsDecaying);

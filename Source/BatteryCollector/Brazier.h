@@ -15,8 +15,6 @@ class BATTERYCOLLECTOR_API ABrazier : public APickup
 		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class USphereComponent* BrazierSphere;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class UParticleSystemComponent* Fire;
 public:	
 	// Sets default values for this actor's properties
 	ABrazier();
@@ -25,7 +23,5 @@ public:
 	void WasTriggered_Implementation() override;
 
 
-
 	FORCEINLINE class USphereComponent* GetBrazierSphere() const { return BrazierSphere; }
-	FORCEINLINE class UParticleSystemComponent* GetFire() const { return Fire; }
 };
